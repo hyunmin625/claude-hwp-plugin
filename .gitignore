@@ -1,0 +1,7 @@
+node_modules/
+mcp-server/dist/
+*.hwp
+*.hwpx
+*.pdf
+.env
+.DS_Store
