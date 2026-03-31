@@ -1,0 +1,41 @@
+{
+  "name": "claude-hwp-plugin",
+  "version": "0.1.0",
+  "description": "HWP/HWPX 한글 문서를 Claude Code로 완전히 제어하는 플러그인. 문서 읽기, 양식 자동 채우기, 새 문서 생성, 문서 비교를 자연어 명령으로 수행합니다.",
+  "author": "hyunmin625",
+  "license": "MIT",
+  "keywords": ["hwp", "hwpx", "한글", "문서", "kordoc", "mcp"],
+  "mcpServers": {
+    "claude-hwp": {
+      "command": "node",
+      "args": ["./mcp-server/dist/index.js"],
+      "description": "HWP/HWPX 문서 제어 MCP 서버 (kordoc 기반)",
+      "tools": [
+        "hwp_parse",
+        "hwp_detect_format",
+        "hwp_extract_form",
+        "hwp_fill_form",
+        "hwp_batch_fill",
+        "hwp_create",
+        "hwp_compare",
+        "hwp_metadata"
+      ]
+    }
+  },
+  "skills": [
+    {
+      "name": "hwp-agent",
+      "path": "./skills/SKILL.md",
+      "description": "HWP/HWPX 한글 문서를 자연어 명령으로 제어하는 에이전트"
+    }
+  ],
+  "install": {
+    "steps": [
+      "cd mcp-server && npm install",
+      "cd mcp-server && npm run build"
+    ]
+  },
+  "requirements": {
+    "node": ">=18"
+  }
+}
