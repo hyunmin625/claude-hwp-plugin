@@ -48,17 +48,17 @@
 
 ## 개발 단계 (Roadmap)
 
-### Phase 1 - 기반 구축
+### Phase 1 — 기반 구축
 - kordoc 프로젝트 분석 및 핵심 모듈 파악
 - HWP/HWPX 읽기/쓰기 기본 기능 구현 (MCP 도구로 래핑)
 - Claude Code에서 MCP 연결 및 기본 동작 검증
 
-### Phase 2 - 핵심 기능 구현
+### Phase 2 — 핵심 기능 구현
 - 전체 제어 기능(읽기·쓰기·수정·저장) 구현
 - 양식 자동 채우기(Auto Form Fill) 기능 구현
-- Skill 프롬프트 작성 (자연어 -> MCP 도구 호출 변환)
+- Skill 프롬프트 작성 (자연어 → MCP 도구 호출 변환)
 
-### Phase 3 - Plugin 패키징 및 배포
+### Phase 3 — Plugin 패키징 및 배포
 - MCP Server + Skill을 `.plugin` 파일로 패키징
 - 설치 가이드 및 사용 예시 문서화
 - 테스트 및 엣지케이스 대응 (대용량 문서, 복잡한 표 구조 등)
@@ -68,7 +68,7 @@
 ## 구현 참조 자료
 
 ### GitHub - kordoc 프로젝트
-- **참조 링크**: https://github.com/search?q=kordoc&type=repositories
+- **참조 링크**: https://github.com/search?q=kordoc&type=repositories (검색 후 해당 프로젝트 확인)
 - **활용 목적**: MCP Server 구현 시 kordoc 프로젝트의 구조, API 설계, 파일 처리 방식을 기반으로 개발
 - **참조 대상**:
   - HWP/HWPX 문서 파싱 및 쓰기 로직

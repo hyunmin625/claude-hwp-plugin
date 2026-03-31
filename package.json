@@ -1,0 +1,21 @@
+{
+  "name": "claude-hwp-plugin-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "HWP Agent 개발 워크스페이스 (빌드 · 테스트 · 패키징)",
+  "scripts": {
+    "build":        "npm run build --prefix mcp-server",
+    "test":         "npm test --prefix mcp-server",
+    "test:watch":   "npm run test:watch --prefix mcp-server",
+    "test:coverage":"npm run test:coverage --prefix mcp-server",
+    "package":      "npm run build && node scripts/package-plugin.mjs",
+    "package:only": "node scripts/package-plugin.mjs"
+  },
+  "devDependencies": {
+    "archiver": "^7.0.1"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

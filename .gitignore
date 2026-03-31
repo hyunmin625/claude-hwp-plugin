@@ -5,3 +5,12 @@ mcp-server/dist/
 *.pdf
 .env
 .DS_Store
+
+# 빌드 산출물
+*.plugin
+
+# Claude Code 로컬 설정
+.claude/
+
+# 커버리지
+coverage/

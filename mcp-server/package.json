@@ -1,0 +1,32 @@
+{
+  "name": "claude-hwp-plugin-mcp",
+  "version": "0.1.0",
+  "description": "MCP Server for HWP/HWPX Korean document control via Claude Code",
+  "type": "module",
+  "bin": {
+    "claude-hwp-mcp": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.28.0",
+    "kordoc": "^1.6.0",
+    "pdfjs-dist": "^5.6.205",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@vitest/coverage-v8": "^2.1.9",
+    "typescript": "^5.5.0",
+    "vitest": "^2.1.9"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
