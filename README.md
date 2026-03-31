@@ -2,6 +2,8 @@
 
 > **Claude Code** 로 한컴 한글 문서(.hwp / .hwpx)를 자연어로 완전히 제어하는 AI 에이전트 플러그인
 
+[![npm version](https://img.shields.io/npm/v/claude-hwp-plugin-mcp)](https://www.npmjs.com/package/claude-hwp-plugin-mcp)
+[![npm downloads](https://img.shields.io/npm/dm/claude-hwp-plugin-mcp)](https://www.npmjs.com/package/claude-hwp-plugin-mcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-%3E%3D18-brightgreen)](https://nodejs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue)](https://www.typescriptlang.org)
@@ -16,13 +18,14 @@
 - **자연어 명령** 만으로 문서 읽기·양식 채우기·새 문서 생성·비교를 수행
 - [kordoc](https://github.com/chrisryugj/kordoc) 라이브러리를 **MCP Server** 로 래핑, Claude Code **Skill** 과 연결
 - `.hwp` / `.hwpx` / `.pdf` 읽기 지원, 쓰기는 `.hwpx` 포맷으로 출력
+- npm 패키지 [`claude-hwp-plugin-mcp`](https://www.npmjs.com/package/claude-hwp-plugin-mcp) 로 배포 — `npx` 한 줄로 즉시 사용 가능
 
 ```
 사용자 자연어 명령
       ↓
 Claude Code + Skill (SKILL.md)
       ↓
-MCP Server (index.ts — 8개 도구)
+MCP Server (npx claude-hwp-plugin-mcp — 8개 도구)
       ↓
 kordoc 라이브러리 (HWP/HWPX 파싱·생성)
       ↓
@@ -60,78 +63,53 @@ kordoc 라이브러리 (HWP/HWPX 파싱·생성)
 
 ---
 
-## 프로젝트 구조
+## 설치
 
-```
-claude-hwp-plugin/
-├── plugin.json                  # 플러그인 매니페스트 (MCP 서버 + Skill 등록)
-├── plan.md                      # 개발 계획 및 로드맵
-│
-├── mcp-server/                  # MCP 백엔드 서버
-│   ├── src/
-│   │   ├── index.ts             # 8개 MCP 도구 구현 (메인)
-│   │   └── __tests__/           # 단위 테스트 (vitest)
-│   │       ├── utils.test.ts    # formatBytes, escapeRegex, 파일 검증 (41개)
-│   │       ├── patterns.test.ts # 필드 치환 정규식 패턴 테스트 (29개)
-│   │       └── batch.test.ts    # 배치 처리, Zod 스키마 검증 (40개)
-│   ├── dist/                    # 빌드 결과물 (tsc 컴파일)
-│   ├── package.json
-│   ├── tsconfig.json
-│   └── vitest.config.ts
-│
-├── skills/
-│   └── SKILL.md                 # Claude Code Skill 프롬프트
-│
-└── scripts/
-    └── package-plugin.mjs       # .plugin 아카이브 패키징 스크립트
-```
+### 방법 1: npx로 즉시 사용 (권장)
 
----
+별도 설치 없이 `npx` 로 바로 실행합니다.
 
-## 설치 및 사용
-
-### 요구사항
-
-- Node.js **18** 이상
-- Claude Code (MCP 사용 가능 버전)
-
-### 1. 의존성 설치 및 빌드
+**Claude Code CLI 로 등록:**
 
 ```bash
-# 루트 의존성 설치 (패키징 도구 포함)
-npm install
-
-# MCP 서버 의존성 설치 및 TypeScript 빌드
-cd mcp-server
-npm install
-npm run build
-cd ..
+claude mcp add claude-hwp -- npx -y claude-hwp-plugin-mcp
 ```
 
-### 2. Claude Code에 MCP 서버 등록
-
-`~/.claude.json` 또는 Claude Code MCP 설정에 추가:
+또는 프로젝트 루트의 `.mcp.json` 에 직접 추가:
 
 ```json
 {
   "mcpServers": {
     "claude-hwp": {
-      "command": "node",
-      "args": ["/절대경로/claude-hwp-plugin/mcp-server/dist/index.js"]
+      "command": "npx",
+      "args": ["-y", "claude-hwp-plugin-mcp"],
+      "description": "HWP/HWPX 문서 제어 MCP 서버"
     }
   }
 }
 ```
 
-또는 Claude Code CLI 로 등록:
+### 방법 2: 전역 설치 후 사용
 
 ```bash
-claude mcp add claude-hwp node /절대경로/claude-hwp-plugin/mcp-server/dist/index.js
+npm install -g claude-hwp-plugin-mcp
+claude mcp add claude-hwp -- claude-hwp-mcp
 ```
 
-### 3. Skill 등록 (선택)
+### 방법 3: 소스에서 직접 빌드
 
-`plugin.json` 에 정의된 Skill이 Claude Code에서 자동 인식됩니다.
+```bash
+git clone https://github.com/hyunmin625/claude-hwp-plugin.git
+cd claude-hwp-plugin/mcp-server
+npm install
+npm run build
+claude mcp add claude-hwp node ./dist/index.js
+```
+
+### 요구사항
+
+- Node.js **18** 이상
+- Claude Code (MCP 사용 가능 버전)
 
 ---
 
@@ -176,6 +154,38 @@ Claude: hwp_compare 결과:
 
 ---
 
+## 프로젝트 구조
+
+```
+claude-hwp-plugin/
+├── .claude-plugin/
+│   └── plugin.json              # 플러그인 매니페스트
+├── .mcp.json                    # MCP 서버 로컬 설정
+│
+├── mcp-server/                  # npm 패키지 (claude-hwp-plugin-mcp)
+│   ├── src/
+│   │   ├── index.ts             # 8개 MCP 도구 구현 (메인)
+│   │   └── __tests__/           # 단위 테스트 (vitest)
+│   │       ├── utils.test.ts    # formatBytes, escapeRegex, 파일 검증 (41개)
+│   │       ├── patterns.test.ts # 필드 치환 정규식 패턴 테스트 (29개)
+│   │       └── batch.test.ts    # 배치 처리, Zod 스키마 검증 (40개)
+│   ├── dist/                    # 빌드 결과물 (tsc 컴파일)
+│   ├── package.json             # npm: claude-hwp-plugin-mcp@0.1.0
+│   ├── tsconfig.json
+│   └── vitest.config.ts
+│
+├── skills/
+│   └── hwp-agent/
+│       └── SKILL.md             # Claude Code Skill 프롬프트
+│
+├── scripts/
+│   └── package-plugin.mjs       # .plugin 아카이브 패키징 스크립트
+│
+└── README.md
+```
+
+---
+
 ## 개발
 
 ### 테스트 실행
@@ -201,7 +211,6 @@ npm run package          # 빌드 + 패키징
 npm run package:only     # 패키징만 (이미 빌드된 경우)
 
 # 출력: claude-hwp-plugin-v0.1.0.plugin
-claude plugin install ./claude-hwp-plugin-v0.1.0.plugin
 ```
 
 ### 기술 스택
@@ -236,12 +245,14 @@ claude plugin install ./claude-hwp-plugin-v0.1.0.plugin
 - [x] **Phase 2** — 양식 채우기 고도화 + 배치 처리 (`hwp_batch_fill`, 최대 500건)
 - [x] **Phase 2** — 단위 테스트 110개 작성 (vitest)
 - [x] **Phase 3** — `.plugin` 패키징 스크립트 완성
-- [ ] **Phase 3** — Claude Code 마켓플레이스 배포
+- [x] **Phase 3** — npm 패키지 배포 (`claude-hwp-plugin-mcp@0.1.0`)
+- [x] **Phase 3** — Claude Code 플러그인 디렉토리 제출
 
 ---
 
 ## 참조
 
+- [npm: claude-hwp-plugin-mcp](https://www.npmjs.com/package/claude-hwp-plugin-mcp) — npm 패키지
 - [kordoc](https://github.com/chrisryugj/kordoc) — HWP / HWPX / PDF 파싱·생성 엔진
 - [Model Context Protocol](https://modelcontextprotocol.io) — MCP 사양
 - [Claude Code Docs](https://docs.claude.com) — Claude Code 문서
