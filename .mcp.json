@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "claude-hwp": {
+      "command": "node",
+      "args": ["./mcp-server/dist/index.js"],
+      "description": "HWP/HWPX 문서 제어 MCP 서버 (kordoc 기반)"
+    }
+  }
+}
